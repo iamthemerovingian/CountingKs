@@ -36,12 +36,26 @@ namespace CountingKs.Models
             };
         }
 
+
         public DiaryModel Create(Diary d)
         {
             return new DiaryModel
             {
                 Url = _UrlHelper.Link("Diaries", new { diaryid = d.CurrentDate.ToString("yyyy-MM-dd") }),
-                CurrentDate = d.CurrentDate
+                CurrentDate = d.CurrentDate,
+                Entries = d.Entries.Select(e => Create(e))
+            };
+        }
+
+        public DiaryEntryModel Create(DiaryEntry diaryEntry)
+        {
+            return new DiaryEntryModel
+            {
+                Url = _UrlHelper.Link("DiaryEntries", new { diaryid = diaryEntry.Diary.CurrentDate.ToString("yyyy-MM-dd"), id = diaryEntry.Id }),
+                FoodDescription = diaryEntry.FoodItem.Description,
+                MeasureDescription = diaryEntry.Measure.Description,
+                MeasureUrl = _UrlHelper.Link("Measures", new { foodid = diaryEntry.Measure.Food.Id, id = diaryEntry.Measure.Id }),
+                Quantity = diaryEntry.Quantity
             };
         }
     }
