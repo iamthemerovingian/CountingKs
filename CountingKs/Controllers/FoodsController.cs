@@ -8,25 +8,22 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
+using System.Web.Http.Routing;
 
 namespace CountingKs.Controllers
 {
     public class FoodsController : BaseApiController
     {
+        const int PAGE_SIZE = 50;
         public FoodsController(ICountingKsRepository repo) : base(repo)
         {           
         }
 
-        public IEnumerable<FoodModel> Get(bool includeMeasures = true)
+        public object Get(bool includeMeasures = true, int page = 0)
         {
             IQueryable<Food> query;
             var repo = new CountingKsRepository(new CountingKsContext());
-
-            //var results = repo.GetAllFoods()
-            //                .OrderBy(f => f.Description)
-            //                .Take(25)
-            //                .ToList();
-
+            
             if (includeMeasures)
             {
                 query = TheRepository.GetAllFoodsWithMeasures();
@@ -36,12 +33,29 @@ namespace CountingKs.Controllers
                 query = TheRepository.GetAllFoods();
             }
 
-             var results =     query.OrderBy(f => f.Description)
-                                    .Take(25)
+            var baseQuery = query.OrderBy(f => f.Description);
+
+            var totalCount = baseQuery.Count();
+            var totalPages = Math.Ceiling((double)totalCount / PAGE_SIZE);
+
+            var helper = new UrlHelper(Request);
+            var prevUrl = page > 0 ? helper.Link("Food", new { page = page - 1}) : "" ;
+            var nextUrl = page < totalPages - 1 ? helper.Link("Food", new { page = page + 1}) : "";
+
+            var results  = baseQuery.Skip(PAGE_SIZE*page)
                                     .ToList()
                                     .Select(f => TheModelFactory.Create(f));
 
-            return results;
+
+
+            return new
+            {
+                TotalCount = totalCount,
+                TotalPages = totalPages,
+                PrevUrl = prevUrl,
+                NextUrl = nextUrl,
+                Results = results
+            };
         }
 
         public FoodModel Get(int foodid)

@@ -108,5 +108,36 @@ namespace CountingKs.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.ToString());
             }
         }
+
+        [HttpPut]
+        [HttpPatch ]
+        public HttpResponseMessage Patch(DateTime diaryid, int id, [FromBody] DiaryEntryModel model)
+        {
+            try
+            {
+                var entity = TheRepository.GetDiaryEntry(_identityService.CurrentUser, diaryid, id);
+                if (entity == null)
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+
+                var parsedValue = TheModelFactory.Parse(model);
+                if (parsedValue == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+                if (entity.Quantity != parsedValue.Quantity)
+                {
+                    entity.Quantity = parsedValue.Quantity;
+                    if (TheRepository.SaveAll())
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+            catch (Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.ToString());
+            }
+        }
     }
 }
