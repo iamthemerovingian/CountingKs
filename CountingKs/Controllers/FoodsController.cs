@@ -11,16 +11,12 @@ using System.Web.Http;
 
 namespace CountingKs.Controllers
 {
-    public class FoodsController : ApiController
+    public class FoodsController : BaseApiController
     {
-        private ICountingKsRepository _repo;
-        private ModelFactory _ModelFactory;
-
-        public FoodsController(ICountingKsRepository repo)
-        {
-            _repo = repo;
-            _ModelFactory = new ModelFactory();
+        public FoodsController(ICountingKsRepository repo) : base(repo)
+        {           
         }
+
         public IEnumerable<FoodModel> Get(bool includeMeasures = true)
         {
             IQueryable<Food> query;
@@ -33,24 +29,24 @@ namespace CountingKs.Controllers
 
             if (includeMeasures)
             {
-                query = repo.GetAllFoodsWithMeasures();
+                query = TheRepository.GetAllFoodsWithMeasures();
             }
             else
             {
-                query = repo.GetAllFoods();
+                query = TheRepository.GetAllFoods();
             }
 
              var results =     query.OrderBy(f => f.Description)
                                     .Take(25)
                                     .ToList()
-                                    .Select(f => _ModelFactory.Create(f));
+                                    .Select(f => TheModelFactory.Create(f));
 
             return results;
         }
 
         public FoodModel Get(int foodid)
         {
-            return _ModelFactory.Create(_repo.GetFood(foodid));
+            return TheModelFactory.Create(TheRepository.GetFood(foodid));
         }
     }
 }
