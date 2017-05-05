@@ -204,10 +204,12 @@
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\DiariesController.cs" />
     <Compile Include="Controllers\DiaryEntriesController.cs" />
+    <Compile Include="Controllers\DiarySummaryController.cs" />
     <Compile Include="Controllers\FoodsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\DiaryEntryModel.cs" />
     <Compile Include="Models\DiaryModel.cs" />
+    <Compile Include="Models\DiarySummaryModel.cs" />
     <Compile Include="Services\CountingKsIdentityService.cs" />
     <Compile Include="Controllers\MeasuresController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
