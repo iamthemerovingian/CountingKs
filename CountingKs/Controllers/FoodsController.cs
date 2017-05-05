@@ -21,10 +21,15 @@ namespace CountingKs.Controllers
         {
             var repo = new CountingKsRepository(new CountingKsContext());
 
-            var results = repo.GetAllFoods()
-                            .OrderBy(f => f.Description)
-                            .Take(25)
-                            .ToList();
+            //var results = repo.GetAllFoods()
+            //                .OrderBy(f => f.Description)
+            //                .Take(25)
+            //                .ToList();
+
+            var results = repo.GetAllFoodsWithMeasures()
+                 .OrderBy(f => f.Description)
+                 .Take(25)
+                 .ToList();
 
             return results;
         }
