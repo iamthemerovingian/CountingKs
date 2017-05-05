@@ -33,7 +33,7 @@ namespace CountingKs.Controllers
             {
                 if(_ModelFactory == null)
                 {
-                    _ModelFactory = new ModelFactory(this.Request);
+                    _ModelFactory = new ModelFactory(this.Request, _repo);
                 }
                 return _ModelFactory;
             }

@@ -1,4 +1,5 @@
-﻿using CountingKs.Data.Entities;
+﻿using CountingKs.Data;
+using CountingKs.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,11 @@ namespace CountingKs.Models
     public class ModelFactory
     {
         private UrlHelper _UrlHelper;
+        private ICountingKsRepository _repo;
 
-        public ModelFactory(HttpRequestMessage request)
+        public ModelFactory(HttpRequestMessage request, ICountingKsRepository repo)
         {
+            _repo = repo;
             _UrlHelper = new UrlHelper(request);
         }
         public FoodModel Create(Food food)
@@ -57,6 +60,32 @@ namespace CountingKs.Models
                 MeasureUrl = _UrlHelper.Link("Measures", new { foodid = diaryEntry.Measure.Food.Id, id = diaryEntry.Measure.Id }),
                 Quantity = diaryEntry.Quantity
             };
+        }
+
+        public DiaryEntry Parse(DiaryEntryModel model)
+        {
+            try
+            {
+                var entry = new DiaryEntry();
+
+                if(model.Quantity != default(double))
+                {
+                    entry.Quantity = model.Quantity;
+                }
+
+                var uri = new Uri(model.MeasureUrl);
+                var measureId = int.Parse(uri.Segments.Last());
+                var measure = _repo.GetMeasure(measureId);
+
+                entry.Measure = measure;
+                entry.FoodItem = measure.Food;
+
+                return entry;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
     }
 }
