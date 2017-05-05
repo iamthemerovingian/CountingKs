@@ -84,29 +84,6 @@ namespace CountingKs.Controllers
             }
         }
 
-        public HttpResponseMessage Delete(DateTime diaryid, int id)
-        {
-            try
-            {
-                if (TheRepository.GetDiaryEntries(_identityService.CurrentUser, diaryid).Any(e => e.Id == id) == false)
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
-                }
-
-                if (TheRepository.DeleteDiaryEntry(id) && TheRepository.SaveAll())
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
-                }
-
-            }
-            catch (Exception e)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.ToString());
-            }
-        }
+        
     }
 }
