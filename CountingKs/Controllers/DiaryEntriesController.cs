@@ -65,7 +65,7 @@ namespace CountingKs.Controllers
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Duplicate measures not allowed");
                 }
 
-
+                diary.UserName = _identityService.CurrentUser;
                 //saves the entry.
                 diary.Entries.Add(entity);
                 if(TheRepository.SaveAll())
