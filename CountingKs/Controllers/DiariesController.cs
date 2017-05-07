@@ -1,5 +1,6 @@
 ﻿using CountingKs.Data;
 using CountingKs.Data.Entities;
+using CountingKs.Filters;
 using CountingKs.Models;
 using CountingKs.Services;
 using System;
@@ -12,6 +13,7 @@ using System.Web.Http;
 
 namespace CountingKs.Controllers
 {
+    [CountingKsAuthorize]
     public class DiariesController : BaseApiController
     {
         private ICountingKsIdentityService _identityService;
