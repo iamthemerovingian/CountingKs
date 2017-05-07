@@ -1,5 +1,6 @@
 ﻿using CountingKs.Data;
 using CountingKs.Data.Entities;
+using CountingKs.Filters;
 using CountingKs.Models;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Web.Http.Routing;
 
 namespace CountingKs.Controllers
 {
+    //[RequireHttps]
     public class FoodsController : BaseApiController
     {
         const int PAGE_SIZE = 50;
