@@ -54,7 +54,7 @@ namespace CountingKs
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             //Add Supportfor JsonP.
-            var formatter = new JsonpMediaTypeFormatter(jsonFormatter);
+            var formatter = new JsonpMediaTypeFormatter(jsonFormatter, "cb");
             config.Formatters.Insert(0, formatter);
 
 #if !DEBUG
