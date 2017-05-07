@@ -14,7 +14,7 @@ using System.Web.Http.Routing;
 namespace CountingKs.Controllers
 {
     //[RequireHttps]
-    [Authorize]
+    [CountingKsAuthorize(false)]
     public class FoodsController : BaseApiController
     {
         const int PAGE_SIZE = 50;

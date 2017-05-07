@@ -215,6 +215,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Filters\CountingKsAuthorizeAttribute.cs" />
+    <Compile Include="Filters\NinjectWebApiFilterProvider.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Models\AuthTokenModel.cs" />
     <Compile Include="Models\DiaryEntryModel.cs" />
