@@ -15,15 +15,21 @@ namespace CountingKs
         {
             config.Routes.MapHttpRoute(
                 name: "Food",
-                routeTemplate: "api/nutrition/foods/{foodid}",
+                routeTemplate: "api/v1/nutrition/foods/{foodid}",
                 defaults: new { controller = "foods", foodid = RouteParameter.Optional }
                 //constraints: new { id = "/d+"}
             );
 
             config.Routes.MapHttpRoute(
                  name: "Measures",
-                 routeTemplate: "api/nutrition/foods/{foodid}/measures/{id}",
+                 routeTemplate: "api/v1/nutrition/foods/{foodid}/measures/{id}",
                  defaults: new { controller = "measures", id = RouteParameter.Optional }
+             );
+
+            config.Routes.MapHttpRoute(
+                 name: "Measures2",
+                 routeTemplate: "api/v2/nutrition/foods/{foodid}/measures/{id}",
+                 defaults: new { controller = "measuresv2", id = RouteParameter.Optional }
              );
 
             config.Routes.MapHttpRoute(
