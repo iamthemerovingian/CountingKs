@@ -1,10 +1,12 @@
 ﻿using CountingKs.Filters;
+using CountingKs.Services;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
 using WebApiContrib.Formatting.Jsonp;
 
 namespace CountingKs
@@ -15,22 +17,22 @@ namespace CountingKs
         {
             config.Routes.MapHttpRoute(
                 name: "Food",
-                routeTemplate: "api/v1/nutrition/foods/{foodid}",
+                routeTemplate: "api/nutrition/foods/{foodid}",
                 defaults: new { controller = "foods", foodid = RouteParameter.Optional }
                 //constraints: new { id = "/d+"}
             );
 
             config.Routes.MapHttpRoute(
                  name: "Measures",
-                 routeTemplate: "api/v1/nutrition/foods/{foodid}/measures/{id}",
+                 routeTemplate: "api/nutrition/foods/{foodid}/measures/{id}",
                  defaults: new { controller = "measures", id = RouteParameter.Optional }
              );
 
-            config.Routes.MapHttpRoute(
-                 name: "Measures2",
-                 routeTemplate: "api/v2/nutrition/foods/{foodid}/measures/{id}",
-                 defaults: new { controller = "measuresv2", id = RouteParameter.Optional }
-             );
+            //config.Routes.MapHttpRoute(
+            //     name: "Measures2",
+            //     routeTemplate: "api/v2/nutrition/foods/{foodid}/measures/{id}",
+            //     defaults: new { controller = "measuresv2", id = RouteParameter.Optional }
+            // );
 
             config.Routes.MapHttpRoute(
                   name: "Diaries",
@@ -69,6 +71,8 @@ namespace CountingKs
             var formatter = new JsonpMediaTypeFormatter(jsonFormatter, "cb");
             config.Formatters.Insert(0, formatter);
 
+            //Replace the controllerselector with our customController selector
+            config.Services.Replace(typeof(IHttpControllerSelector), new CountingKsControllerSelector(config));
 #if !DEBUG
             //Forces the entire API to use SSL encryption.
             config.Filters.Add(new RequireHttpsAttribute());

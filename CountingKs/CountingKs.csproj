@@ -224,6 +224,7 @@
     <Compile Include="Models\DiarySummaryModel.cs" />
     <Compile Include="Models\MeasureV2Model.cs" />
     <Compile Include="Models\TokenRequestModel.cs" />
+    <Compile Include="Services\CountingKsControllerSelector.cs" />
     <Compile Include="Services\CountingKsIdentityService.cs" />
     <Compile Include="Controllers\MeasuresController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
