@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -34,7 +35,9 @@ namespace CountingKs.Services
 
                 //var version = GetVersionFromHeader(request);
 
-                var version = GetVersionFromAcceptHeaderVersion(request);
+                //var version = GetVersionFromAcceptHeaderVersion(request);
+
+                var version = GetVersionFromMediaType(request);
 
                 var newName = string.Concat(controllerName + "v", version);
 
@@ -48,6 +51,24 @@ namespace CountingKs.Services
                 return descriptor;
             }
             return null;
+        }
+
+        private string GetVersionFromMediaType(HttpRequestMessage request)
+        {
+            var accept = request.Headers.Accept;
+
+            var ex = new Regex(@"application\/vnd\.countingks\.([a-z]+)\.v([0-9]+)\+json");
+
+            foreach (var mime in accept)
+            {
+                var match = ex.Match(mime.MediaType);
+                if (match != null)
+                {
+                    return match.Groups[2].Value;
+                }
+            }
+
+            return "1";
         }
 
         private string GetVersionFromAcceptHeaderVersion(HttpRequestMessage request)
