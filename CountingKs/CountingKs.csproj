@@ -42,6 +42,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CacheCow.Common, Version=0.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CacheCow.Common.0.4.6\lib\net40\CacheCow.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CacheCow.Server, Version=0.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CacheCow.Server.0.4.6\lib\net40\CacheCow.Server.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CacheCow.Server.EntityTagStore.SqlServer, Version=0.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CacheCow.Server.EntityTagStore.SqlServer.0.4.1\lib\net40\CacheCow.Server.EntityTagStore.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>

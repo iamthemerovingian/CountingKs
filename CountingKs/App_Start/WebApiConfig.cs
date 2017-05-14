@@ -1,8 +1,11 @@
-﻿using CountingKs.Filters;
+﻿using CacheCow.Server;
+using CacheCow.Server.EntityTagStore.SqlServer;
+using CountingKs.Filters;
 using CountingKs.Services;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
@@ -74,6 +77,13 @@ namespace CountingKs
 
             //Replace the controllerselector with our customController selector
             config.Services.Replace(typeof(IHttpControllerSelector), new CountingKsControllerSelector(config));
+
+            //Configure caching/Etag Support
+            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            var sqlServerEntityStore = new SqlServerEntityTagStore(connectionString);
+            var cacheHandler = new CachingHandler(sqlServerEntityStore);
+            config.MessageHandlers.Add(cacheHandler);
+
 #if !DEBUG
             //Forces the entire API to use SSL encryption.
             config.Filters.Add(new RequireHttpsAttribute());
