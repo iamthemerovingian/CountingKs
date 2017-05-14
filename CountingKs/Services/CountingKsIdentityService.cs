@@ -12,13 +12,14 @@ namespace CountingKs.Services
         {
             get
             {
-                var name = Thread.CurrentPrincipal.Identity.Name;
-                return name;
-            }
-            //set
-            //{
+#if DEBUG
+                return "shawnwildermuth";
 
-            //}
+#else
+                return Thread.CurrentPrincipal.Identity.Name;
+
+#endif
+            }
         }
 
     }

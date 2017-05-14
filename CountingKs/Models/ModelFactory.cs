@@ -29,6 +29,25 @@ namespace CountingKs.Models
             };
         }
 
+        public MeasureV2Model Create2(Measure measure)
+        {
+            return new MeasureV2Model
+            {
+                Url = _UrlHelper.Link("Measures", new { foodid = measure.Food.Id, id = measure.Id }),
+                Description = measure.Description,
+                Calories = Math.Round(measure.Calories),
+                TotalFat = measure.TotalFat,
+                SaturatedFat =measure.SaturatedFat,
+                Protein = measure.Protein,
+                Carbohydrates = measure.Carbohydrates,
+                Fiber = measure.Fiber,
+                Sugar = measure.Sugar,
+                Sodium = measure.Sodium,
+                Iron = measure.Iron,
+                Cholestrol = measure.Cholestrol
+                };
+        }
+
         public MeasureModel Create(Measure measure)
         {
             return new MeasureModel
