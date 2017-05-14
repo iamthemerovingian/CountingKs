@@ -32,7 +32,9 @@ namespace CountingKs.Services
             {
                 //var version = GetVersionFromQuearyString(request);
 
-                var version = GetVersionFromHeader(request);
+                //var version = GetVersionFromHeader(request);
+
+                var version = GetVersionFromAcceptHeaderVersion(request);
 
                 var newName = string.Concat(controllerName + "v", version);
 
@@ -46,6 +48,25 @@ namespace CountingKs.Services
                 return descriptor;
             }
             return null;
+        }
+
+        private string GetVersionFromAcceptHeaderVersion(HttpRequestMessage request)
+        {
+            var accept = request.Headers.Accept;
+
+            foreach (var mime in accept)
+            {
+                if (mime.MediaType == "application/json")
+                {
+                    var value = mime.Parameters
+                                    .Where(v => v.Name.Equals("version", StringComparison.CurrentCultureIgnoreCase))
+                                    .FirstOrDefault();
+
+                    return value.Value;
+                }
+            }
+
+            return "1";
         }
 
         private string GetVersionFromHeader(HttpRequestMessage request)
