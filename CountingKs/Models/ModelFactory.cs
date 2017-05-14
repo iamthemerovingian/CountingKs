@@ -71,9 +71,27 @@ namespace CountingKs.Models
         {
             return new DiaryModel
             {
-                Url = _UrlHelper.Link("Diaries", new { diaryid = d.CurrentDate.ToString("yyyy-MM-dd") }),
+                Links = new List<LinkModel>
+                {
+                     CreateLink(_UrlHelper.Link("Diaries", new { diaryid = d.CurrentDate.ToString("yyyy-MM-dd") }),
+                     "self"),
+                     CreateLink(_UrlHelper.Link("DiaryEntries", new { diaryid = d.CurrentDate.ToString("yyyy-MM-dd") }),
+                     "newDiaryEntry", "POST")
+                },
+
                 CurrentDate = d.CurrentDate,
                 Entries = d.Entries.Select(e => Create(e))
+            };
+        }
+
+        public LinkModel CreateLink(string href, string rel, string method = "GET", bool isTemplated = false)
+        {
+            return new LinkModel
+            {
+                Href = href,
+                Rel = rel,
+                Method = method,
+                IsTemplated = isTemplated
             };
         }
 
@@ -83,9 +101,11 @@ namespace CountingKs.Models
             {
                 var diary = new Diary();
 
-                if(!string.IsNullOrEmpty(model.Url))
+                var selfLink = model.Links.Where(l => l.Rel == "self").FirstOrDefault();
+
+                if(selfLink!= null && !string.IsNullOrEmpty(selfLink.Href))
                 {
-                    var uri = new Uri(model.Url);
+                    var uri = new Uri(selfLink.Href);
                     diary.Id = int.Parse(uri.Segments.Last());
                 }
 
@@ -120,7 +140,11 @@ namespace CountingKs.Models
         {
             return new DiaryEntryModel
             {
-                Url = _UrlHelper.Link("DiaryEntries", new { diaryid = diaryEntry.Diary.CurrentDate.ToString("yyyy-MM-dd"), id = diaryEntry.Id }),
+                Links = new List<LinkModel>
+                {
+                    CreateLink(_UrlHelper.Link("DiaryEntries", new { diaryid = diaryEntry.Diary.CurrentDate.ToString("yyyy-MM-dd"), id = diaryEntry.Id }),
+                    "self")
+                },
                 FoodDescription = diaryEntry.FoodItem.Description,
                 MeasureDescription = diaryEntry.Measure.Description,
                 MeasureUrl = _UrlHelper.Link("Measures", new { foodid = diaryEntry.Measure.Food.Id, id = diaryEntry.Measure.Id }),

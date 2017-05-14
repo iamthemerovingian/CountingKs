@@ -42,8 +42,21 @@ namespace CountingKs.Controllers
             var totalPages = Math.Ceiling((double)totalCount / PAGE_SIZE);
 
             var helper = new UrlHelper(Request);
-            var prevUrl = page > 0 ? helper.Link("Food", new { page = page - 1}) : "" ;
-            var nextUrl = page < totalPages - 1 ? helper.Link("Food", new { page = page + 1}) : "";
+
+            var links = new List<LinkModel>();
+
+            if (page > 0)
+            {
+                links.Add(TheModelFactory.CreateLink(helper.Link("Food", new { page = page - 1 }), "PreviousPage"));
+            }
+
+            if (page < totalPages - 1)
+            {
+                links.Add(TheModelFactory.CreateLink(helper.Link("Food", new { page = page + 1 }), "NextPage"));
+            }
+
+            //var prevUrl = page > 0 ? helper.Link("Food", new { page = page - 1}) : "" ;
+            //var nextUrl = page < totalPages - 1 ? helper.Link("Food", new { page = page + 1}) : "";
 
             var results  = baseQuery.Skip(PAGE_SIZE*page)
                                     .ToList()
@@ -55,8 +68,7 @@ namespace CountingKs.Controllers
             {
                 TotalCount = totalCount,
                 TotalPages = totalPages,
-                PrevUrl = prevUrl,
-                NextUrl = nextUrl,
+                Links = links,
                 Results = results
             };
         }

@@ -234,6 +234,7 @@
     <Compile Include="Models\DiaryEntryModel.cs" />
     <Compile Include="Models\DiaryModel.cs" />
     <Compile Include="Models\DiarySummaryModel.cs" />
+    <Compile Include="Models\LinkModel.cs" />
     <Compile Include="Models\MeasureV2Model.cs" />
     <Compile Include="Models\TokenRequestModel.cs" />
     <Compile Include="Services\CountingKsControllerSelector.cs" />
