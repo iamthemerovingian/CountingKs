@@ -1,5 +1,6 @@
 ﻿using CacheCow.Server;
 using CacheCow.Server.EntityTagStore.SqlServer;
+using CountingKs.Converters;
 using CountingKs.Filters;
 using CountingKs.Services;
 using Newtonsoft.Json.Serialization;
@@ -31,12 +32,6 @@ namespace CountingKs
                  routeTemplate: "api/nutrition/foods/{foodid}/measures/{id}",
                  defaults: new { controller = "measures", id = RouteParameter.Optional }
              );
-
-            //config.Routes.MapHttpRoute(
-            //     name: "Measures2",
-            //     routeTemplate: "api/v2/nutrition/foods/{foodid}/measures/{id}",
-            //     defaults: new { controller = "measuresv2", id = RouteParameter.Optional }
-            // );
 
             config.Routes.MapHttpRoute(
                   name: "Diaries",
@@ -70,6 +65,7 @@ namespace CountingKs
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().FirstOrDefault();
 
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            jsonFormatter.SerializerSettings.Converters.Add(new LinkModelConverter());
             CreteMediaTypes(jsonFormatter);
             //Add Supportfor JsonP.
             var formatter = new JsonpMediaTypeFormatter(jsonFormatter, "cb");

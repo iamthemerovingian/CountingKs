@@ -23,7 +23,11 @@ namespace CountingKs.Models
         {
             return new FoodModel
             {
-                Url = _UrlHelper.Link("Food",new { foodid = food.Id }),
+                Links = new List<LinkModel>
+                {
+                    CreateLink(_UrlHelper.Link("Food",new { foodid = food.Id }),
+                    "self")
+                },
                 Description = food.Description,
                 Measures = food.Measures.Select(m => Create(m))
             };
@@ -33,7 +37,11 @@ namespace CountingKs.Models
         {
             return new MeasureV2Model
             {
-                Url = _UrlHelper.Link("Measures", new { foodid = measure.Food.Id, id = measure.Id}),
+                Links = new List<LinkModel>
+                {
+                    CreateLink(_UrlHelper.Link("Measures", new { foodid = measure.Food.Id, id = measure.Id}),
+                    "self")
+                },
                 Description = measure.Description,
                 Calories = Math.Round(measure.Calories),
                 TotalFat = measure.TotalFat,
@@ -52,7 +60,11 @@ namespace CountingKs.Models
         {
             return new MeasureModel
             {
-                Url = _UrlHelper.Link("Measures", new { foodid = measure.Food.Id, id = measure.Id}),
+                Links = new List<LinkModel>
+                {
+                    CreateLink(_UrlHelper.Link("Measures", new { foodid = measure.Food.Id, id = measure.Id}),
+                    "self")
+                },
                 Description = measure.Description,
                 Calories = Math.Round(measure.Calories)
             };
