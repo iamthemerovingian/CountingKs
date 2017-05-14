@@ -30,9 +30,9 @@ namespace CountingKs.Services
 
             if (controllers.TryGetValue(controllerName, out descriptor))
             {
-                var version = "2";
+                var version = GetVersionFromQuearyString(request);
 
-                var newName = string.Concat(controllerName + "V", version);
+                var newName = string.Concat(controllerName + "v", version);
 
                 HttpControllerDescriptor versionedDescriptor;
 
@@ -44,6 +44,19 @@ namespace CountingKs.Services
                 return descriptor;
             }
             return null;
+        }
+
+        private string GetVersionFromQuearyString(HttpRequestMessage request)
+        {
+            var query = HttpUtility.ParseQueryString(request.RequestUri.Query);
+
+            var version = query["v"];
+            if (version != null)
+            {
+                return version;
+            }
+
+            return "1";
         }
     }
 }
